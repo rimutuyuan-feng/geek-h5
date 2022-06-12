@@ -9,7 +9,7 @@ export default function NavBar({ className, children, rightContent }) {
 		<div className={classNames(styles.root, className)}>
 			{/* 后退按钮 */}
 			<div className='left' onClick={() => history.goBack()}>
-				<Icon type='iconfanhui' />
+				<Icon type='icon-fanhui' />
 			</div>
 			{/* 居中标题 */}
 			<div className='title'>{children}</div>
