@@ -3,6 +3,7 @@ import NavBar from '@/components/NavBar'
 import Input from '@/components/Input'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import classNames from 'classnames'
 import styles from './index.module.scss'
 export default function Login() {
 	const formik = useFormik({
@@ -29,6 +30,7 @@ export default function Login() {
 		errors,
 		handleBlur,
 		touched,
+		isValid,
 	} = formik
 	return (
 		<div className={styles.root}>
@@ -66,7 +68,13 @@ export default function Login() {
 							<div className='validate'>{errors.code}</div>
 						)}
 					</div>
-					<button type='submit' className='login-btn'>
+					<button
+						type='submit'
+						className={classNames(
+							'login-btn',
+							isValid ? '' : 'disabled'
+						)}
+					>
 						登录
 					</button>
 				</form>
