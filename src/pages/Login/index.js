@@ -5,7 +5,11 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import classNames from 'classnames'
 import styles from './index.module.scss'
+import { useDispatch } from 'react-redux'
+import { sendCode } from '@/store/actions/login'
+import { Toast } from 'antd-mobile'
 export default function Login() {
+	const dispatch = useDispatch()
 	const formik = useFormik({
 		initialValues: {
 			mobile: '',
@@ -45,6 +49,7 @@ export default function Login() {
 							value={mobile}
 							onChange={handleChange}
 							onBlur={handleBlur}
+							maxLength={11}
 						/>
 						{touched.mobile && errors.mobile && (
 							<div className='validate'>{errors.mobile}</div>
@@ -57,8 +62,28 @@ export default function Login() {
 								name='code'
 								placeholder='请输入验证码'
 								extra='获取验证码'
-								onExtraClick={() => {
-									console.log('点击了')
+								maxLength={6}
+								onExtraClick={async () => {
+									if (!/^1[3-9]\d{9}$/.test(mobile)) {
+										formik.setTouched({
+											mobile: true,
+										})
+										return
+									}
+									try {
+										await dispatch(sendCode(mobile))
+									} catch (err) {
+										if (err.response) {
+											Toast.show({
+												content:
+													err.response.data.message,
+											})
+										} else {
+											Toast.show({
+												content: '服务器繁忙',
+											})
+										}
+									}
 								}}
 								onChange={handleChange}
 								onBlur={handleBlur}
