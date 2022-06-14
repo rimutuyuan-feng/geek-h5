@@ -1,7 +1,7 @@
 import axios from 'axios'
 const http = axios.create({
 	baseURL: 'http://toutiao.itheima.net/v1_0',
-	timeout: 1000,
+	timeout: 3000,
 })
 http.interceptors.request.use((config) => {
 	return config
