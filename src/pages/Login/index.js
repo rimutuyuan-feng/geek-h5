@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import NavBar from '@/components/NavBar'
 import Input from '@/components/Input'
 import { useFormik } from 'formik'
@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux'
 import { sendCode } from '@/store/actions/login'
 import { Toast } from 'antd-mobile'
 export default function Login() {
+	const [codeTime, setCodeTime] = useState(0)
+	const timeId = useRef(-1)
 	const dispatch = useDispatch()
 	const formik = useFormik({
 		initialValues: {
@@ -50,6 +52,7 @@ export default function Login() {
 							onChange={handleChange}
 							onBlur={handleBlur}
 							maxLength={11}
+							autoComplete='off'
 						/>
 						{touched.mobile && errors.mobile && (
 							<div className='validate'>{errors.mobile}</div>
@@ -61,9 +64,13 @@ export default function Login() {
 								value={code}
 								name='code'
 								placeholder='请输入验证码'
-								extra='获取验证码'
+								extra={codeTime ? codeTime : '获取验证码'}
 								maxLength={6}
+								autoComplete='off'
 								onExtraClick={async () => {
+									if (codeTime) {
+										return
+									}
 									if (!/^1[3-9]\d{9}$/.test(mobile)) {
 										formik.setTouched({
 											mobile: true,
@@ -71,6 +78,17 @@ export default function Login() {
 										return
 									}
 									try {
+										setCodeTime(3)
+										timeId.current = setInterval(() => {
+											setCodeTime((codeTime) => {
+												if (codeTime === 1) {
+													clearInterval(
+														timeId.current
+													)
+												}
+												return codeTime - 1
+											})
+										}, 1000)
 										await dispatch(sendCode(mobile))
 									} catch (err) {
 										if (err.response) {
