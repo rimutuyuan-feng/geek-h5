@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
+import login from './login'
 const rootReducer = combineReducers({
-	test: (state = 0, action) => state,
+	login,
 })
 export default rootReducer

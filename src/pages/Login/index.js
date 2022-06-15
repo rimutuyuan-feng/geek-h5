@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import classNames from 'classnames'
 import styles from './index.module.scss'
 import { useDispatch } from 'react-redux'
-import { sendCode } from '@/store/actions/login'
+import { login, sendCode } from '@/store/actions/login'
 import { Toast } from 'antd-mobile'
 export default function Login() {
 	const [codeTime, setCodeTime] = useState(0)
@@ -17,8 +17,9 @@ export default function Login() {
 			mobile: '',
 			code: '',
 		},
-		onSubmit: (values) => {
-			console.log(values)
+		onSubmit: async (values) => {
+			await dispatch(login(values))
+			Toast.show({ content: '登录成功' })
 		},
 		validationSchema: Yup.object({
 			mobile: Yup.string()
@@ -77,31 +78,18 @@ export default function Login() {
 										})
 										return
 									}
-									try {
-										setCodeTime(3)
-										timeId.current = setInterval(() => {
-											setCodeTime((codeTime) => {
-												if (codeTime === 1) {
-													clearInterval(
-														timeId.current
-													)
-												}
-												return codeTime - 1
-											})
-										}, 1000)
-										await dispatch(sendCode(mobile))
-									} catch (err) {
-										if (err.response) {
-											Toast.show({
-												content:
-													err.response.data.message,
-											})
-										} else {
-											Toast.show({
-												content: '服务器繁忙',
-											})
-										}
-									}
+
+									setCodeTime(3)
+									timeId.current = setInterval(() => {
+										setCodeTime((codeTime) => {
+											if (codeTime === 1) {
+												clearInterval(timeId.current)
+											}
+											return codeTime - 1
+										})
+									}, 1000)
+									await dispatch(sendCode(mobile))
+									Toast.show({ content: '发送验证码成功' })
 								}}
 								onChange={handleChange}
 								onBlur={handleBlur}
