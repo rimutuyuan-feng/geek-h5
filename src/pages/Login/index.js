@@ -8,8 +8,10 @@ import styles from './index.module.scss'
 import { useDispatch } from 'react-redux'
 import { login, sendCode } from '@/store/actions/login'
 import { Toast } from 'antd-mobile'
+import { useHistory } from 'react-router-dom'
 export default function Login() {
 	const [codeTime, setCodeTime] = useState(0)
+	const history = useHistory()
 	const timeId = useRef(-1)
 	const dispatch = useDispatch()
 	const formik = useFormik({
@@ -20,6 +22,7 @@ export default function Login() {
 		onSubmit: async (values) => {
 			await dispatch(login(values))
 			Toast.show({ content: '登录成功' })
+			history.push('./home')
 		},
 		validationSchema: Yup.object({
 			mobile: Yup.string()
