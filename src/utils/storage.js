@@ -5,7 +5,7 @@ export const getTokenInfo = () => {
 export const setTokenInfo = (token) => {
 	localStorage.setItem(TOKEN_KEY, JSON.stringify(token))
 }
-export const hasTokenInfo = () => !!getTokenInfo()
+export const hasTokenInfo = () => !!getTokenInfo().token
 export const removeTokenInfo = () => {
 	localStorage.removeItem(TOKEN_KEY)
 }
