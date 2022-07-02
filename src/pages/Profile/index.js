@@ -1,9 +1,16 @@
 import Icon from '@/components/Icon'
+import { getUser } from '@/store/actions/profile'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import styles from './index.module.scss'
 
 export default function Profile() {
 	const history = useHistory()
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(getUser())
+	}, [dispatch])
 	return (
 		<div className={styles.root}>
 			<div className='profile'>
