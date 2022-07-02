@@ -2,13 +2,13 @@ import { Toast } from 'antd-mobile'
 import axios from 'axios'
 import { getTokenInfo } from './storage'
 const http = axios.create({
-	baseURL: 'http://toutiao.itheima.net/v1_0',
+	baseURL: 'http://geek.itheima.net/v1_0',
 	timeout: 3000,
 })
 http.interceptors.request.use((config) => {
 	const token = getTokenInfo().token
 	if (token) {
-		config.heards['Authorization'] = 'Bearer ' + token
+		config.headers['Authorization'] = 'Bearer ' + token
 	}
 	return config
 })
