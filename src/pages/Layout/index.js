@@ -21,7 +21,18 @@ export default function Layout() {
 		<div className={styles.root}>
 			{/* 区域一：点击按钮切换显示内容的区域 */}
 			<div className='tab-content'>
-				<Suspense fallback={<div>loading...</div>}></Suspense>
+				<Suspense fallback={<div>loading...</div>}>
+					<Switch>
+						<Route path={'/home'} exact component={Home} />
+						<Route path={'/home/qa'} exact component={QA} />
+						<Route path={'/home/video'} exact component={Video} />
+						<Route
+							path={'/home/profile'}
+							exact
+							component={Profile}
+						/>
+					</Switch>
+				</Suspense>
 			</div>
 			{/* 区域二：按钮区域，会使用固定定位显示在页面底部 */}
 			<div className='tabbar'>
