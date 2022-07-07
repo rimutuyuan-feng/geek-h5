@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 const Layout = React.lazy(() => import('@/pages/Layout'))
 const Login = React.lazy(() => import('@/pages/Login'))
-const Edit = React.lazy(() => import('@/pages/Edit'))
+const Edit = React.lazy(() => import('@/pages/Profile/Edit'))
 const App = () => {
 	return (
 		<Router>
